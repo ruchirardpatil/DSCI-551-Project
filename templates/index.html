@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Course Management System</title>
+    <style>
+        body { font-family: Arial, sans-serif; }
+        .container { margin: 20px; }
+        form { margin-bottom: 20px; }
+        .form-group { display: flex; align-items: center; margin-top: 10px; }
+        .form-group > label { margin-right: 10px; }
+        input, button { padding: 10px; margin-right: 10px; }
+        button { cursor: pointer; background-color: #007bff; color: white; border: none; border-radius: 5px; }
+        button:hover { background-color: #0056b3; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Add User Form -->
+        <form id="addUserForm">
+            <h2>Add User</h2>
+            <div class="form-group">
+                <label for="userName">Name:</label>
+                <input type="text" id="userName" required>
+            </div>
+            <div class="form-group">
+                <label for="userRole">Role:</label>
+                <input type="text" id="userRole" required>
+            </div>
+            <button type="submit">Submit</button>
+        </form>
+
+        <!-- Add Course Form -->
+        <form id="addCourseForm">
+            <h2>Add Course</h2>
+            <div class="form-group">
+                <label for="courseTitle">Title:</label>
+                <input type="text" id="courseTitle" required>
+            </div>
+            <div class="form-group">
+                <label for="courseDescription">Description:</label>
+                <input type="text" id="courseDescription">
+            </div>
+            <div class="form-group">
+                <label for="courseStartDate">Start Date:</label>
+                <input type="date" id="courseStartDate" required>
+            </div>
+            <div class="form-group">
+                <label for="courseEndDate">End Date:</label>
+                <input type="date" id="courseEndDate" required>
+            </div>
+            <div class="form-group">
+                <label for="courseCapacity">Capacity:</label>
+                <input type="number" id="courseCapacity" required>
+            </div>
+            <div class="form-group">
+                <label for="courseInstructorId">Instructor ID:</label>
+                <input type="number" id="courseInstructorId" required>
+            </div>
+            <button type="submit">Submit</button>
+        </form>
+
+    </div>
+
+    <script>
+        document.getElementById('addUserForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const name = document.getElementById('userName').value;
+            const role = document.getElementById('userRole').value;
+            fetch('http://127.0.0.1:5000/users', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ name: name, role: role }),
+            })
+            .then(response => response.json())
+            .then(data => alert(JSON.stringify(data)))
+            .catch((error) => {
+                console.error('Error:', error);
+            });
+        });
+
+        document.getElementById('addCourseForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const title = document.getElementById('courseTitle').value;
+            const description = document.getElementById('courseDescription').value;
+            const startDate = document.getElementById('courseStartDate').value;
+            const endDate = document.getElementById('courseEndDate').value;
+            const capacity = document.getElementById('courseCapacity').value;
+            const instructorId = document.getElementById('courseInstructorId').value;
+            fetch('http://127.0.0.1:5000/courses', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    title: title,
+                    description: description,
+                    start_date: startDate,
+                    end_date: endDate,
+                    capacity: parseInt(capacity),
+                    instructor_id: parseInt(instructorId),
+                }),
+            })
+            .then(response => response.json())
+            .then(data => alert(JSON.stringify(data)))
+            .catch((error) => {
+                console.error('Error:', error);
+            });
+        });
+    </script>
+</body>
+</html>
